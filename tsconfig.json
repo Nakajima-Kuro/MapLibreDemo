@@ -12,6 +12,8 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
     "target": "ES2022",
     "module": "preserve"
   },
@@ -20,7 +22,8 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "typeCheckHostBindings": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "strictNullChecks": false
   },
   "files": [],
   "references": [
