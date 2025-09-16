@@ -15,7 +15,6 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 })
 export class Mapview implements OnInit, AfterViewInit, OnDestroy {
   map: Map | undefined;
-
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
