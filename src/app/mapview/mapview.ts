@@ -1,6 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { Map } from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Map, MapStyle, config } from '@maptiler/sdk';
+import '@maptiler/sdk/dist/maptiler-sdk.css';
 
 @Component({
   selector: 'app-mapview',
@@ -8,23 +8,36 @@ import 'maplibre-gl/dist/maplibre-gl.css';
   templateUrl: './mapview.html',
   styleUrl: './mapview.css',
 })
-export class Mapview implements AfterViewInit {
+export class Mapview implements OnInit, AfterViewInit, OnDestroy {
+  map: Map | undefined;
+  
+  @ViewChild('map')
+  private mapContainer!: ElementRef<HTMLElement>;
+
   constructor() {}
+
+  ngOnInit(): void {
+    config.apiKey = 'TklZTc88Zw2IBk5gacCp';
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.initMap();
-    }, 0);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.map?.remove();
   }
 
   initMap(): void {
     // Initialize the map here using MapLibre GL JS
-    const initialState = { lng: 105, lat: 16, zoom: 5 };
-    const map = new Map({
-      container: 'map', // container ID
-      style: `https://api.maptiler.com/maps/basic-v2/style.json?key=I9wWU1dnlxq4iLDF2WfM&mtsid=ab4bc823-7da3-4a25-95ad-57c780bed5da`,
-      center: [70, 0], // starting position [lng, lat]
-      zoom: 2, // starting zoom
+    const initialState = { lng: 106, lat: 16, zoom: 5 };
+    this.map = new Map({
+      container: this.mapContainer.nativeElement, // container ID
+      style: MapStyle.SATELLITE,
+      center: [initialState.lng, initialState.lat], // starting position [lng, lat]
+      zoom: initialState.zoom, // starting zoom
     });
   }
 }
