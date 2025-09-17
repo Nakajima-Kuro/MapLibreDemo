@@ -11,15 +11,31 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import proj4 from 'proj4';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
 @Component({
   selector: 'app-mapview',
-  imports: [],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatGridListModule,
+    MatProgressSpinnerModule,
+    MatButtonToggleModule
+  ],
   templateUrl: './mapview.html',
   styleUrl: './mapview.css',
   standalone: true,
 })
 export class Mapview implements OnInit, AfterViewInit, OnDestroy {
   map: Map | undefined;
+  isLoading: boolean = true;
+
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
@@ -70,6 +86,7 @@ export class Mapview implements OnInit, AfterViewInit, OnDestroy {
 
     // Wait for the map to load then add png style layer over the map
     this.map.on('load', () => {
+      this.isLoading = false;
       this.addImageLayerIfExists(layerUrl);
     });
   }

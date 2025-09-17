@@ -1,3 +1,13 @@
 <div class="map-wrap">
+  @if (isLoading) {
+  <div class="spinner-overlay">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
   <div class="map" #map></div>
+  <section>
+    <button matMiniFab style="margin: 0.51vw">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </section>
 </div>
