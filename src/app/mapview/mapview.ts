@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { FileService } from '../services/fileservice';
-
-// import * as maplibregl from '@maptiler/sdk';
-// import { Map } from '@maptiler/sdk';
-// import '@maptiler/sdk/dist/maptiler-sdk.css';
+import { Settingform } from './settingform/settingform';
 
 import * as maplibregl from 'maplibre-gl';
 import { Map } from 'maplibre-gl';
@@ -11,17 +8,12 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import proj4 from 'proj4';
 
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-mapview',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-  ],
+  imports: [MatIconModule, MatProgressSpinnerModule, Settingform],
   templateUrl: './mapview.html',
   styleUrl: './mapview.css',
   standalone: true,
@@ -29,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class Mapview implements OnInit, AfterViewInit, OnDestroy {
   map: Map | undefined;
   isLoading: boolean = true;
+  indexMenu: number = -1;
 
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
@@ -115,9 +108,42 @@ export class Mapview implements OnInit, AfterViewInit, OnDestroy {
         type: 'raster',
         source: 'wms-source',
         paint: {
-          'raster-opacity': 0.3, // Optional: adjust opacity
+          'raster-opacity': 0.5, // Optional: adjust opacity
         },
+        layout: { visibility: 'none' },
       });
     } catch (error) {}
   }
+
+  openSettingMenu(index: number): void {
+    this.indexMenu = index;
+  }
+
+  closeSettingMenu(index: number): void {
+    if (this.indexMenu === index) {
+      this.indexMenu = -1;
+    }
+  }
+
+  //Setting menu event handlers
+  heatMapVisibility: boolean = false;
+  heatMapOpacity: number = 0.5;
+  handleHeatMapVisibilityChange($event): void {
+    if (this.map?.getLayer('wms-layer')) {
+      this.map.setLayoutProperty('wms-layer', 'visibility', $event ? 'visible' : 'none');
+      this.heatMapVisibility = $event;
+    }
+  }
+
+  handleHeatMapOpacityChange($event): void {
+    if (this.map?.getLayer('wms-layer')) {
+      this.map.setPaintProperty('wms-layer', 'raster-opacity', $event);
+      this.heatMapOpacity = $event;
+    }
+  }
+
+  handleSettingMenuClose(): void {
+    this.closeSettingMenu(0);
+  }
+
 }

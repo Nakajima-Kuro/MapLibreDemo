@@ -1,5 +1,5 @@
 <!-- Wrapper component for the map view -->
-<div class="map-wrap relative h-screen w-screen">
+<div class="relative h-screen w-screen">
   <!-- Loading spinner -->
   @if (isLoading) {
   <div class="spinner-overlay">
@@ -10,16 +10,27 @@
   <!-- Display the map -->
   <div class="map absolute h-full w-full" #map></div>
 
-  <!-- Top left buttons -->
+  <!-- Top left buttons list -->
   <section class="z-10 absolute">
-    <div class="inline-grid grid-cols-1 gap-2 px-2 pt-2">
+    <div class="inline-grid grid-cols-1 gap-2 px-3 pt-3">
       <button
         type="button"
         class="text-slate-800 bg-white hover:bg-slate-200 focus:ring-4 focus:outline-none focus:ring-slate-900 rounded-lg p-1 inline-flex items-center w-fit"
+        (click)="openSettingMenu(0)"
       >
         <mat-icon class="scale-90">menu</mat-icon>
-        <span class="sr-only">Icon description</span>
+        <!-- <span class="sr-only">Icon description</span> -->
       </button>
     </div>
   </section>
+  @if (indexMenu === 0) {
+  <app-settingform
+    [heatMapVisibility]="heatMapVisibility"
+    [heatMapOpacity]="heatMapOpacity"
+    (settingMenuClose)="handleSettingMenuClose()"
+    (heatMapVisibilityChange)="handleHeatMapVisibilityChange($event)"
+    (heatMapOpacityChange)="handleHeatMapOpacityChange($event)"
+    class="absolute ml-16 mt-2"
+  ></app-settingform>
+  }
 </div>
