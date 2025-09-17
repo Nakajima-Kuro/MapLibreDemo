@@ -1,8 +1,25 @@
-<div class="map-wrap">
+<!-- Wrapper component for the map view -->
+<div class="map-wrap relative h-screen w-screen">
+  <!-- Loading spinner -->
   @if (isLoading) {
   <div class="spinner-overlay">
     <mat-spinner></mat-spinner>
   </div>
   }
-  <div class="map" #map></div>
+
+  <!-- Display the map -->
+  <div class="map absolute h-full w-full" #map></div>
+
+  <!-- Top left buttons -->
+  <section class="z-10 absolute">
+    <div class="inline-grid grid-cols-1 gap-2 px-2 pt-2">
+      <button
+        type="button"
+        class="text-slate-800 bg-white hover:bg-slate-200 focus:ring-4 focus:outline-none focus:ring-slate-900 rounded-lg p-1 inline-flex items-center w-fit"
+      >
+        <mat-icon class="scale-90">menu</mat-icon>
+        <span class="sr-only">Icon description</span>
+      </button>
+    </div>
+  </section>
 </div>

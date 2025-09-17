@@ -13,20 +13,14 @@ import proj4 from 'proj4';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-mapview',
   imports: [
     MatButtonModule,
     MatIconModule,
-    MatListModule,
-    MatGridListModule,
     MatProgressSpinnerModule,
-    MatButtonToggleModule
   ],
   templateUrl: './mapview.html',
   styleUrl: './mapview.css',
