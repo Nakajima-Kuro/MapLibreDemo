@@ -1,10 +1,19 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  OnDestroy,
+  OnInit,
+  DestroyRef
+} from '@angular/core';
 import { FileService } from '../services/fileservice';
-import { Settingform } from './settingform/settingform';
+import { SettingMenu } from './setting-menu/settingmenu';
 
 import * as maplibregl from 'maplibre-gl';
 import { Map } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import proj4 from 'proj4';
 
@@ -13,7 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-mapview',
-  imports: [MatIconModule, MatProgressSpinnerModule, Settingform],
+  imports: [MatIconModule, MatProgressSpinnerModule, SettingMenu],
   templateUrl: './mapview.html',
   styleUrl: './mapview.css',
   standalone: true,
@@ -21,14 +30,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class Mapview implements OnInit, AfterViewInit, OnDestroy {
   map: Map | undefined;
   isLoading: boolean = true;
-  indexMenu: number = -1;
 
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(private fileService: FileService) {}
+  constructor(private fileService: FileService, private desRef: DestroyRef) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fileService.exampleObservable$.pipe(takeUntilDestroyed(this.desRef)).subscribe((data) => {
+      console.log('Received data from Settingform component: ', data);
+    });
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -115,35 +127,16 @@ export class Mapview implements OnInit, AfterViewInit, OnDestroy {
     } catch (error) {}
   }
 
-  openSettingMenu(index: number): void {
-    this.indexMenu = index;
-  }
-
-  closeSettingMenu(index: number): void {
-    if (this.indexMenu === index) {
-      this.indexMenu = -1;
-    }
-  }
-
   //Setting menu event handlers
-  heatMapVisibility: boolean = false;
-  heatMapOpacity: number = 0.5;
   handleHeatMapVisibilityChange($event): void {
     if (this.map?.getLayer('wms-layer')) {
       this.map.setLayoutProperty('wms-layer', 'visibility', $event ? 'visible' : 'none');
-      this.heatMapVisibility = $event;
     }
   }
 
   handleHeatMapOpacityChange($event): void {
     if (this.map?.getLayer('wms-layer')) {
       this.map.setPaintProperty('wms-layer', 'raster-opacity', $event);
-      this.heatMapOpacity = $event;
     }
   }
-
-  handleSettingMenuClose(): void {
-    this.closeSettingMenu(0);
-  }
-
 }

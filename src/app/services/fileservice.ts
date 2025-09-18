@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileService {
   constructor(private http: HttpClient) {}
+
+  private exampleObservableObject = new Subject<string>();
+  exampleObservable$ = this.exampleObservableObject.asObservable();
+
+  emitExampleObservable(data: string): void {
+    this.exampleObservableObject.next(data);
+  }
 
   downloadFile(url: string): Observable<Blob> {
     return this.http.get(url, { responseType: 'blob' });

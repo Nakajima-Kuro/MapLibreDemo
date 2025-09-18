@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Settingform } from './settingform';
+import { SettingMenu } from './SettingMenu';
 
-describe('Settingform', () => {
-  let component: Settingform;
-  let fixture: ComponentFixture<Settingform>;
+describe('SettingMenu', () => {
+  let component: SettingMenu;
+  let fixture: ComponentFixture<SettingMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Settingform]
+      imports: [SettingMenu]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Settingform);
+    fixture = TestBed.createComponent(SettingMenu);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
